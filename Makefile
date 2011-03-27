@@ -1,12 +1,11 @@
-RANDY_SRC=Main.hs
+RANDY_SRC=Main.hs Cube.hs Display.hs Points.hs Bindings.hs
 
 .PHONY: all
 
-all: randy
+all: glApp
 
-randy: $(RANDY_SRC)
+glApp: $(RANDY_SRC)
 	ghc --make -o $@ $(RANDY_SRC)
 
 clean:
-	rm -f *.hi *.o randy
-
+	rm -f *.hi *.o glApp
