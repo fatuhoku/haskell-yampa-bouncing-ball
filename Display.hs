@@ -31,7 +31,7 @@ draw (SnBall ang pos) = preservingMatrix $ do
   (x,y) <- get pos      -- this thing is modified by the simulation.
   a     <- get ang      -- retrieve the angle
   translate $ Vector3 x y 0  -- transform the modelview matrix to move everything there.
-  ringOfCircles 25 a 40 -- default 'ball' representation
+  ringOfCircles 23 a 40 -- default 'ball' representation
 draw (SnRect rectColour rectTop) = do
   color $ rectColour
   rect (Vertex2 (-400.0) (0.0 :: GLfloat)) (Vertex2 (400.0) (rectTop))
@@ -41,16 +41,17 @@ reshape s@(Size w h) = do
   viewport $= (Position 0 0, s) -- for carrying out digital zoom, kind of.
   postRedisplay Nothing
 
--- Update angle and position of the ball.
+-- Update angle of the ball when idle.
 -- angle       the angle should 
-idle :: IORef(GLfloat) -> IO ()
-idle angle = do
+idle :: IORef(GLfloat) -> IORef(GLfloat) -> IO ()
+idle dAngle angle = do
   a <- get angle
-  angle $=! (a + spinRate)
+  d <- get dAngle
+  angle $=! (a + d)
   postRedisplay Nothing
 
 -- Draws circles of size 0.1 in a radius 
-ringOfCircles n angle r = do
+ringOfCircles n angle r = preservingMatrix $ do
     rotate angle $ Vector3 0 0 (1::GLfloat)
     let d = 2*r
     scale d d (d :: GLfloat)

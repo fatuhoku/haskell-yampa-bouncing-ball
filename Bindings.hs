@@ -8,18 +8,18 @@ dPos = 10.0 :: GLfloat
 {- Miscellaneous Callbacks                                              -}
 {------------------------------------------------------------------------}
 {- Draws 4 really big 20pt 'points' on teach of the corners of a square -}
-keyboardAct a p (Char '\27') Down = exitSuccess
-keyboardAct a p (Char c) Down = do
-  a' <- get a
-  a $= case c of
-         ' ' -> -a'
-         '=' -> 2*a'
-         '-' -> a'/2
-         otherwise -> a'
+keyboardAct dAng _pos (Char '\27') Down = exitSuccess
+keyboardAct dAng _pos (Char c) Down = do
+  d' <- get dAng
+  dAng $=! case c of
+         ' ' -> -d'
+         '=' -> 2*d'
+         '-' -> d'/2
+         otherwise -> d'
 
-keyboardAct a p (SpecialKey k) Down = do
-  (x,y) <- get p
-  p $= case k of
+keyboardAct _dAng pos (SpecialKey k) Down = do
+  (x,y) <- get pos
+  pos $=! case k of
          KeyLeft   -> (x-dPos, y)
          KeyRight  -> (x+dPos, y)
          KeyUp     -> (x, y+dPos)

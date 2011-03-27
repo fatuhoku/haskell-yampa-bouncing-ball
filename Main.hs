@@ -42,9 +42,9 @@ createAWindow windowName = do
   
   -- Initialise IORefs for the objects in our scene...!
   -- I guess we need to vary these using the idle function.
-  pos <- newIORef (0.0 :: GLfloat, 150.0)
-  -- delta    <- newIORef (0.1 :: GLfloat)   -- the rate at which our ball should spin
-  ang <- newIORef (0.0 :: GLfloat) -- the orientation of our ball
+  pos  <- newIORef (0.0 :: GLfloat, 150.0)
+  dAng <- newIORef (0.1 :: GLfloat)   -- the rate at which our ball should spin
+  ang  <- newIORef (0.0 :: GLfloat) -- the orientation of our ball
 
   -- Initialise the scene nodes of the game, and create something
   let ballNode   = SnBall { ballAngle = ang, ballPos = pos }
@@ -53,9 +53,9 @@ createAWindow windowName = do
 
   -- We allow control over the position of the ball, though the rate of spin is
   -- determined as a constant.
-  keyboardMouseCallback $= Just (keyboardMouse ang pos)
+  keyboardMouseCallback $= Just (keyboardMouse dAng pos)
   displayCallback       $= (display rootNode)
-  idleCallback          $= Just (idle ang)
+  idleCallback          $= Just (idle dAng ang)
 
 -- Ratio between width and height.
 aspectRatio :: Size -> GLdouble
