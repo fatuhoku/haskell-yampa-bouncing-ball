@@ -1,4 +1,4 @@
-module Graphics (initGL, render, reshape) where
+module Graphics (initGL, clearAndRender, render, reshape) where
 
 import Data.IORef
 import Graphics.Rendering.OpenGL
@@ -7,9 +7,6 @@ import Circle
 import Cube
 import Points
 import Types
-import FRP.Yampa
-import FRP.Yampa.Vector3
-import FRP.Yampa.Utilities
 
 -- Ratio between width and height.
 aspectRatio :: Size -> GLdouble
@@ -58,10 +55,20 @@ initGL = do
 
 spinRate = 0.1
 
+-- Clears the screen and renders the given SceneNode
+clearAndRender :: SceneNode -> IO ()
+clearAndRender scnNode = do
+    clear [ColorBuffer]
+    loadIdentity
+    render scnNode
+    swapBuffers
+
 -- Draw scene nodes.
-render (SnBall a (x,y) rad) = preservingMatrix $ do
+render (SnBall a (x,y) rad col) = preservingMatrix $ do
   translate $ Vector3 x y 0  -- transform the modelview matrix to move everything there.
-  ringOfCircles 23 a rad -- default 'ball' representation
+  color $ col
+  circle rad
+  -- ringOfCircles 23 a rad -- default 'ball' representation
 render (SnRect rectColour rectTop) = do
   color $ rectColour
   rect (Vertex2 (-400.0) (0.0 :: GLfloat)) (Vertex2 (400.0) (rectTop))

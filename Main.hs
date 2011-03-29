@@ -1,5 +1,6 @@
 module Main where
 
+import Control.Monad
 import System.Exit
 import Data.Tuple.HT
 import Data.IORef
@@ -15,7 +16,7 @@ main :: IO ()
 main = do
   newInput <- newIORef NoEvent
   oldTime  <- newIORef (0 :: Int)
-  rh <- reactInit (initGL >> return NoEvent) (\_ _ b -> b >> return False) mainSF
+  rh <- reactInit (initGL >> return NoEvent) (\_ _ b -> b >> return False) simulate
   -- We allow control over the position of the ball, though the rate of spin is
   -- determined as a constant.
   keyboardMouseCallback $= Just (keyMouse newInput)
@@ -35,10 +36,12 @@ idle :: IORef (Event ())
      -> IO ()
 idle newInput oldTime rh = do
   newInput' <- readIORef newInput
+  if isEvent newInput' then print "Spacebar pressed!" else return ()
   newTime'  <- get elapsedTime
   oldTime'  <- readIORef oldTime
-  let dt = let dt' = (fromIntegral $ newTime' - oldTime')/50
+  let dt = let dt' = (fromIntegral $ newTime' - oldTime')/100
            in if dt' < 0.8 then dt' else 0.8                 -- clamping of time
   react rh (dt,Just newInput')
+  writeIORef newInput NoEvent
   writeIORef oldTime newTime'
   return ()

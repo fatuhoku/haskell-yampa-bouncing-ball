@@ -1,4 +1,4 @@
-RANDY_SRC=Main.hs Cube.hs Graphics.hs Points.hs Bindings.hs Circle.hs SF.hs
+RANDY_SRC:=$(wildcard *.hs)
 
 .PHONY: all
 

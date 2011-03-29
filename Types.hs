@@ -18,9 +18,10 @@ data KeyboardInput = KeyboardInput {
 -- SnRect is used to draw the ground!
 data SceneNode
   = SnBall {
-        ballAngle :: GLfloat,
+        ballAng   :: GLfloat,
         ballPos   :: (GLfloat,GLfloat),
-        ballRad   :: GLfloat
+        ballRad   :: GLfloat,
+        ballCol   :: Color3 GLfloat
     }
   | SnRect {
         rectColor :: Color3 GLfloat,
