@@ -1,21 +1,13 @@
 module Bindings (keyboardMouse) where
 
+import Data.IORef
 import Graphics.UI.GLUT
-import System.Exit
 
 dPos = 10.0 :: GLfloat
 {------------------------------------------------------------------------}
 {- Miscellaneous Callbacks                                              -}
 {------------------------------------------------------------------------}
 {- Draws 4 really big 20pt 'points' on teach of the corners of a square -}
-keyboardAct dAng _pos (Char '\27') Down = exitSuccess
-keyboardAct dAng _pos (Char c) Down = do
-  d' <- get dAng
-  dAng $=! case c of
-         ' ' -> -d'
-         '=' -> 2*d'
-         '-' -> d'/2
-         otherwise -> d'
 
 keyboardAct _dAng pos (SpecialKey k) Down = do
   (x,y) <- get pos
@@ -31,3 +23,5 @@ keyboardAct _ _ _ _ = return ()
 keyboardMouse angle pos key state modifiers position = do
   keyboardAct angle pos key state
 
+-- Current very simple implementation
+-- (\k ks m _ -> writeIORef $ Event ()) -- mark that an event occured

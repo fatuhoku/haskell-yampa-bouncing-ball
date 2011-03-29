@@ -1,4 +1,4 @@
-RANDY_SRC=Main.hs Cube.hs Display.hs Points.hs Bindings.hs Circle.hs
+RANDY_SRC=Main.hs Cube.hs Graphics.hs Points.hs Bindings.hs Circle.hs SF.hs
 
 .PHONY: all
 
