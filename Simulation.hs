@@ -46,7 +46,7 @@ discardInputs = arr $ const ()
 -- TODO Abstract out the initial state.
 update :: SF () SceneNode
 update = proc () -> do
-  (pos,vel) <- bouncingBall (0,200) (10,3) (cor defPhysics) ballRadius bounds -< ()
+  (pos,vel) <- bouncingBall (0,200) (40,45) (cor defPhysics) ballRadius bounds -< ()
   let ballSn = SnBall { ballAng = 0,  
                         ballPos = pos,
                         ballRad = ballRadius,
