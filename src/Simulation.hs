@@ -1,5 +1,5 @@
 {-# LANGUAGE BangPatterns, Arrows #-}
-module SF (simulate) where
+module Simulation (simulate) where
 
 import Graphics.Rendering.OpenGL hiding (Radius)
 import Graphics.UI.GLUT hiding (Radius)
@@ -47,7 +47,7 @@ discardInputs = arr $ const ()
 update :: SF () SceneNode
 update = proc () -> do
   (pos,vel) <- bouncingBall (0,200) (40,45) (cor defPhysics) ballRadius bounds -< ()
-  let ballSn = SnBall { ballAng = 0,  
+  let ballSn = SnBall { ballAng = 0,
                         ballPos = pos,
                         ballRad = ballRadius,
                         ballCol = ballColour }
@@ -71,7 +71,7 @@ fallingBall p0 v0 = proc () -> do
 
 -- fallingBall' pos0 vel0 ground
 -- This time around, we detect for collisions with the ground given by 'ground',
--- and record the position, velocity, and the direction normal to the 
+-- and record the position, velocity, and the direction normal to the
 -- at the location of the collision.
 -- Carries out a check for each of the four bounds
 fallingBall' :: Pos2 -> Vel2 -> Radius -> Bounds ->
@@ -98,7 +98,7 @@ bouncingBall p0 v0 cor rad bounds = bouncingBall' p0 v0
       switch (fallingBall' p0 v0 rad bounds) $
         \(dir,(p,v)) -> bouncingBall' p (reflect dir ((-cor) *^ v))
     reflect l v = (2*(v `dot` l)/(l `dot` l)) *^ l ^-^ v
-      
+
 
 -- Renders the scene using OpenGL from the Render module
 draw :: SF SceneNode (IO ())
@@ -107,6 +107,6 @@ draw = arr clearAndRender
 -- Integral, taking intial value as first argument
 integral' ini = (iPre zeroVector &&& time) >>> sscan f (ini, 0) >>> arr fst
     where
-    f (!prevVal, !prevTime) (!val, !time) = 
+    f (!prevVal, !prevTime) (!val, !time) =
       (prevVal ^+^ (realToFrac $ time - prevTime) *^ val, time)
 

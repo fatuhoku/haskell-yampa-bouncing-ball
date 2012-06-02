@@ -1,4 +1,6 @@
-*.o
-*.hi
 *.swp
-glApp
+*.swo
+*.hi
+
+.DS_Store
+dist/

@@ -1,15 +1,15 @@
 module Main where
 
 import Control.Monad
-import System.Exit
-import Data.Tuple.HT
 import Data.IORef
-import Graphics.UI.GLUT 
-import Graphics.Rendering.OpenGL
+import Data.Tuple.HT
 import FRP.Yampa
 import Graphics
+import Graphics.Rendering.OpenGL
+import Graphics.UI.GLUT
+import System.Exit
 import Types
-import SF
+import Simulation
 
 -- Entry point.
 main :: IO ()
@@ -29,7 +29,7 @@ main = do
     keyMouse _keyEv  _ _  _ _             = return ()
 
 -- Update angle of the ball when idle.
--- angle       the angle should 
+-- angle       the angle should
 idle :: IORef (Event ())
      -> IORef Int
      -> ReactHandle (Event ()) (IO ())
